@@ -48,6 +48,7 @@ env/
 *.pickle
 *.joblib
 models/
+!models/README.md
 outputs/
 predictions/
 *.csv
