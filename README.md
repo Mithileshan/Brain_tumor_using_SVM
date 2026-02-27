@@ -79,7 +79,6 @@ python -c "from src.bt_svm.config import Config; from src.bt_svm.predict import 
 
 **No Tumor:**
 ![No Tumor](screenshot/no_tumor.png)
-
 ### 5. Tests
 
 ```bash
