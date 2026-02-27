@@ -75,10 +75,10 @@ python -c "from src.bt_svm.config import Config; from src.bt_svm.predict import 
 #### UI Screenshots
 
 **Tumor Detected:**
-![Tumor Detected](screenshot/yes%20tumor.png)
+![Tumor Detected](screenshot/yes_tumor.png)
 
 **No Tumor:**
-![No Tumor](screenshot/no%20tumor.png)
+![No Tumor](screenshot/no_tumor.png)
 
 ### 5. Tests
 
