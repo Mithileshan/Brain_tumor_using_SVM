@@ -6,23 +6,23 @@
 
 ## 📋 Overview
 
-This project implements a **Support Vector Machine (SVM)** classifier for binary brain tumor classification on MRI images. It provides:
+This project implements a **Support Vector Machine (SVM)** classifier for **4-class brain tumor classification** on MRI images:
 - ✅ Traditional ML approach (non-deep learning)
 - ✅ Fast training & inference
-- ✅ Interpretable model
+- ✅ Interpretable model with production structure
 - ✅ Dimensionality reduction via PCA
-- ✅ Reproducible Jupyter notebook
+- ✅ CLI + modular Python package
 
-**Maturity:** Production-ready baseline (Phase 1+)  
+**Maturity:** Production-ready Phase 1 ✅  
+**Classes:** Glioma, Meningioma, Pituitary, No Tumor (4-class)  
 **Model:** SVM with RBF kernel + PCA feature extraction  
-**Framework:** scikit-learn, OpenCV  
-**Approach:** Classical ML (non-neural network)
+**Framework:** scikit-learn, OpenCV
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Phase 1)
 
-### 1. Install
+### 1. Install & Verify
 
 ```bash
 # Clone repo
@@ -30,83 +30,118 @@ git clone https://github.com/Mithileshan/Brain_tumor_using_SVM.git
 cd Brain_tumor_using_SVM
 
 # Install dependencies
-pip install -r requirements.txt
-
-# Launch Jupyter
-jupyter notebook "PROJECT Brain Tumor Classification.ipynb"
+make install
+# or: pip install -r requirements.txt
 ```
 
 ### 2. Prepare Dataset
 
-Organize your brain MRI dataset with this structure:
+Download dataset from **Kaggle**: [Brain Tumor Classification MRI](https://www.kaggle.com/sartajbhuvaji/brain-tumor-classification-mri)
+
+Organize under `data/`:
 
 ```
-brain_tumor/
+data/
 ├── Training/
-│   ├── no_tumor/          (MRI images with no tumor)
-│   └── pituitary_tumor/   (MRI images with tumor)
+│   ├── glioma_tumor/          # Glioma (astrocytoma)
+│   ├── meningioma_tumor/      # Meningioma
+│   ├── no_tumor/              # No tumor
+│   └── pituitary_tumor/       # Pituitary
 └── Testing/
+    ├── glioma_tumor/
+    ├── meningioma_tumor/
     ├── no_tumor/
     └── pituitary_tumor/
 ```
 
-**Dataset Requirements:**
-- **Format:** JPG, PNG, or grayscale images
-- **Size:** Typically 512×512 or similar (will be resized to 200×200)
-- **Classes:** 2 (no_tumor: 0, pituitary_tumor: 1)
-- **Split:** 80% train, 20% test (random)
+### 3. Train Model (1 command)
 
-### 3. Run Training & Classification
+```bash
+# Smoke test (trains on full dataset, default 98% PCA variance)
+make train
 
-Open the Jupyter notebook and execute all cells in order:
+# Or directly:
+python -m src.bt_svm.train --data-dir data --output-dir artifacts/models/dev
 
+# Optional args:
+python -m src.bt_svm.train \
+  --data-dir data \
+  --output-dir artifacts/models/prod \
+  --img-size 200 \
+  --pca-variance 0.98 \
+  --model-type svm
 ```
-PROJECT Brain Tumor Classification.ipynb
+
+**Output:**
+```
+artifacts/models/dev/
+├── model.joblib          # Trained SVM
+├── pca.joblib            # Fitted PCA transformer
+├── metrics.json          # Training metrics
+└── config.json           # Config snapshot
 ```
 
-**Key cells:**
-1. **Load modules** → Import dependencies
-2. **Prepare/collect data** → Load images from `brain_tumor/` folders
-3. **Visualize data** → Preview sample MRI images
-4. **Feature scaling** → Normalize pixel values (0-255 → 0-1)
-5. **Feature selection (PCA)** → Reduce dimensions to 98% variance
-6. **Train Model** → Fit SVM & Logistic Regression
-7. **Evaluate** → Print accuracy scores
-8. **Predict** → Visualize predictions on test set
+### 4. Evaluate & Predict
 
-### 4. Results
+```bash
+# (Phase 2 — coming soon)
+make eval
 
-After running, you'll see:
-- ✅ Training & testing accuracy scores
-- ✅ Confusion matrix (misclassifications)
-- ✅ Visual predictions on test images (3×3 and 4×4 grids)
-- ✅ Per-image tumor/no-tumor classification
+# Predict on single image:
+python -c "
+from src.bt_svm.config import Config
+from src.bt_svm.predict import Predictor
+c = Config()
+p = Predictor('artifacts/models/dev/model.joblib', 
+              'artifacts/models/dev/pca.joblib', c)
+result = p.predict_image('path/to/scan.jpg')
+print(result)
+"
+```
 
 ---
 
-## 📁 Project Structure
+## 📁 Project Structure (Phase 1)
 
 ```
 .
-├── PROJECT Brain Tumor Classification.ipynb   # Main notebook
-├── requirements.txt                           # Dependencies
-├── README.md                                  # This file
-├── .gitignore                                 # Git exclusions
+├── README.md                          # This file
+├── requirements.txt                   # Dependencies (pinned)
+├── Makefile                           # Commands: make install/train/eval/predict
+├── data.yaml                          # (not used in SVM, kept for reference)
 │
-├── brain_tumor/                               # Dataset (not committed)
+├── data/                              # Dataset (LOCAL ONLY, not in git)
 │   ├── Training/
+│   │   ├── glioma_tumor/
+│   │   ├── meningioma_tumor/
 │   │   ├── no_tumor/
 │   │   └── pituitary_tumor/
 │   └── Testing/
+│       ├── glioma_tumor/
+│       ├── meningioma_tumor/
 │       ├── no_tumor/
 │       └── pituitary_tumor/
 │
-├── models/                                    # Saved models (Phase 2)
-│   └── svm_model.pkl                         # Trained SVM (to be added)
+├── src/bt_svm/                        # Core package (Phase 1)
+│   ├── __init__.py
+│   ├── config.py                      # Configuration dataclass
+│   ├── data.py                        # DataLoader with validation
+│   ├── preprocess.py                  # Preprocessor (normalize, PCA)
+│   ├── train.py                       # Training CLI entrypoint
+│   ├── eval.py                        # Evaluation utilities (Phase 2)
+│   └── predict.py                     # Inference API
 │
-└── outputs/                                   # Results & predictions (Phase 2)
-    └── predictions.csv
-```
+├── artifacts/                         # Models & metrics (LOCAL ONLY)
+│   └── models/
+│       └── dev/
+│           ├── model.joblib
+│           ├── pca.joblib
+│           ├── metrics.json
+│           └── config.json
+│
+├── scripts/                           # Utility scripts (Phase 2+)
+├── tests/                             # Unit tests (Phase 6)
+└── PROJECT Brain Tumor Classification.ipynb  # Original notebook (legacy)
 
 ---
 
