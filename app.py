@@ -9,6 +9,7 @@ import cv2
 from pathlib import Path
 import sys
 import os
+import tempfile
 
 sys.path.insert(0, str(Path(__file__).parent))
 
@@ -44,8 +45,10 @@ with col2:
     st.subheader("🔍 Prediction Results")
     
     if uploaded_file:
-        # Save temp file for prediction
-        temp_path = "/tmp/temp_mri.jpg"
+        # Save temp file for prediction (cross-platform)
+        temp_dir = tempfile.gettempdir()
+        temp_path = os.path.join(temp_dir, "streamlit_mri_temp.jpg")
+        
         with open(temp_path, 'wb') as f:
             f.write(uploaded_file.getbuffer())
         

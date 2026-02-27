@@ -72,6 +72,14 @@ streamlit run app.py
 python -c "from src.bt_svm.config import Config; from src.bt_svm.predict import Predictor; p = Predictor('artifacts/models/dev/model.joblib', 'artifacts/models/dev/pca.joblib', Config()); print(p.predict_image('path/to/image.jpg'))"
 ```
 
+#### UI Screenshots
+
+**Tumor Detected:**
+![Tumor Detected](screenshot/yes%20tumor.png)
+
+**No Tumor:**
+![No Tumor](screenshot/no%20tumor.png)
+
 ### 5. Tests
 
 ```bash
