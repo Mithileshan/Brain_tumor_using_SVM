@@ -1,22 +1,13 @@
 ﻿# Brain Tumor Classification using SVM (Support Vector Machine)
 
-**Production-ready SVM classifier for brain tumor detection in MRI images.**
+**SVM classifier for brain tumor detection in MRI images.**
 
 ---
 
 ## Overview
 
 This project implements a **Support Vector Machine (SVM)** classifier for **4-class brain tumor classification** on MRI images:
-- ✓ Traditional ML approach (non-deep learning)
-- ✓ Fast training & inference
-- ✓ Interpretable model with production structure
-- ✓ Dimensionality reduction via PCA
-- ✓ CLI + modular Python package
-- ✓ Streamlit interactive UI
-- ✓ Full test coverage (7/7 passing)
-- ✓ Docker containerization & CI/CD
 
-**Status:** PRODUCTION READY - Phases 1-8 Complete
 **Classes:** Glioma, Meningioma, Pituitary, No Tumor (4-class)  
 **Model:** SVM with RBF kernel + PCA feature extraction  
 **Framework:** scikit-learn, OpenCV  
@@ -24,7 +15,7 @@ This project implements a **Support Vector Machine (SVM)** classifier for **4-cl
 
 ---
 
-## Quick Start (All Phases Complete)
+## Quick Start 
 
 ### 1. Install & Verify
 
@@ -95,50 +86,6 @@ docker run -p 8501:8501 brain-tumor-svm:latest streamlit run app.py
 
 ---
 
-## Project Structure (All Phases Complete)
-
-```
-.
-├── README.md
-├── requirements.txt
-├── Makefile
-├── MODEL_CARD.md (Phase 3)
-├── app.py (Phase 5)
-├── Dockerfile (Phase 7)
-├── .github/workflows/ci.yml (Phase 8)
-│
-├── data/
-│   ├── Training/
-│   │   ├── glioma_tumor/
-│   │   ├── meningioma_tumor/
-│   │   ├── no_tumor/
-│   │   └── pituitary_tumor/
-│   └── Testing/
-│
-├── src/bt_svm/
-│   ├── __init__.py
-│   ├── config.py
-│   ├── data.py
-│   ├── preprocess.py
-│   ├── train.py
-│   ├── eval.py
-│   └── predict.py
-│
-├── artifacts/
-│   └── models/
-│       └── dev/
-│           ├── model.joblib
-│           ├── pca.joblib
-│           ├── metrics.json
-│           └── config.json
-│
-├── tests/
-│   └── test_svm.py (7 tests - all passing)
-│
-└── PROJECT Brain Tumor Classification.ipynb
-```
-
----
 
 ## Model Details
 
@@ -155,30 +102,7 @@ docker run -p 8501:8501 brain-tumor-svm:latest streamlit run app.py
 
 ---
 
-## Implementation Status - ALL PHASES COMPLETE
 
-| Phase | Component | Status |
-|-------|-----------|--------|
-| 1 | Foundation (CLI, structure, .gitignore) | COMPLETE |
-| 2 | Evaluation (metrics, confusion matrix) | COMPLETE |
-| 3 | Model Cards (documentation) | COMPLETE |
-| 4 | Versioning (artifact management) | COMPLETE |
-| 5 | Streamlit UI (interactive demo) | COMPLETE |
-| 6 | Tests & Linting (7/7 passing) | COMPLETE |
-| 7 | Docker Containerization | COMPLETE |
-| 8 | GitHub Actions CI/CD | COMPLETE |
-
-**Test Results:**
-- test_config_creation: PASSED
-- test_config_dict: PASSED
-- test_preprocessor_creation: PASSED
-- test_preprocessor_shape: PASSED
-- test_pca_dimensionality_reduction: PASSED
-- test_dataloader_creation: PASSED
-- test_dataloader_class_mapping: PASSED
-Total: 7/7 in 1.75s
-
----
 
 ## Configuration
 
@@ -211,11 +135,6 @@ pytest tests/ -v
 
 ---
 
-## License
-
-MIT License
-
----
 
 ## Contributing
 
@@ -227,15 +146,6 @@ MIT License
 
 ---
 
-## Support
-
-For issues:
-1. Check GitHub Issues
-2. Verify dataset structure
-3. Provide environment info: python --version, sklearn.__version__
-4. Check MODEL_CARD.md for known limitations
-
----
 
 ## Limitations & Safety
 
